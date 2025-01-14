@@ -21,6 +21,7 @@ from .._response import (
 from ..types.song import Song
 from .._base_client import make_request_options
 from ..types.song_list_response import SongListResponse
+from ..types.song_create_response import SongCreateResponse
 
 __all__ = ["SongsResource", "AsyncSongsResource"]
 
@@ -59,7 +60,7 @@ class SongsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> object:
+    ) -> SongCreateResponse:
         """Generate a new AI song based on provided parameters.
 
         Rate limited to 2 calls per
@@ -101,7 +102,7 @@ class SongsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=object,
+            cast_to=SongCreateResponse,
         )
 
     def retrieve(
@@ -218,7 +219,7 @@ class AsyncSongsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> object:
+    ) -> SongCreateResponse:
         """Generate a new AI song based on provided parameters.
 
         Rate limited to 2 calls per
@@ -260,7 +261,7 @@ class AsyncSongsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=object,
+            cast_to=SongCreateResponse,
         )
 
     async def retrieve(
