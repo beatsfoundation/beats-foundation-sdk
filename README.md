@@ -1,6 +1,6 @@
 # AI Creation Engine SDK, by BEATS AI
 
-[(https://www.beatsfoundation.com/beats_pfp.jpg]
+[(https://www.beatsfoundation.com/beats_pfp.jpg)]
 [![PyPI version](https://img.shields.io/pypi/v/beats-foundation.svg)](https://pypi.org/project/beats-foundation/)
 
 The AI Creation Engine SDK allows for access to dynamic media generation (starting with songs), by providing convenient access to the Beats Foundation REST API from any Python 3.8+
