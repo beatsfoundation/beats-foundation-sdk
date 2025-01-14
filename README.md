@@ -1,6 +1,6 @@
 # Beatsfoundation Python API library
 
-[![PyPI version](https://img.shields.io/pypi/v/beats_foundation.svg)](https://pypi.org/project/beats_foundation/)
+[![PyPI version](https://img.shields.io/pypi/v/beats-foundation.svg)](https://pypi.org/project/beats-foundation/)
 
 The Beatsfoundation Python library provides convenient access to the Beatsfoundation REST API from any Python 3.8+
 application. The library includes type definitions for all request params and response fields,
@@ -16,7 +16,7 @@ The REST API documentation can be found on [docs.beatsfoundation.com](https://do
 
 ```sh
 # install from PyPI
-pip install --pre beats_foundation
+pip install --pre beats-foundation
 ```
 
 ## Usage
