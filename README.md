@@ -2,15 +2,14 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/beats_foundation.svg)](https://pypi.org/project/beats_foundation/)
 
-The AI Creation Engine SDK, by the BEATS AI Foundation, provides convenient access to the AI Creation Engine REST API from any Python 3.8+
-application. The library includes type definitions for all request params and response fields,
+The AI Creation Engine SDK, by the BEATS AI Foundation, provides convenient access to the AI Creation Engine REST API from any Python 3.8+ application. The library includes type definitions for all request params and response fields,
 and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ## Documentation
 
-The REST API documentation can be found on [docs.beats-foundation.com](https://docs.beats-foundation.com). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.beatsfoundation.com](https://docs.beatsfoundation.com). The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
@@ -24,9 +23,9 @@ pip install --pre beats_foundation
 The full API of this library can be found in [api.md](api.md).
 
 ```python
-from beats_foundation import BeatsFoundation
+from beats_foundation import Beatsfoundation
 
-client = BeatsFoundation()
+client = Beatsfoundation()
 
 song = client.songs.retrieve(
     "REPLACE_ME",
@@ -41,13 +40,13 @@ so that your Bearer Token is not stored in source control.
 
 ## Async usage
 
-Simply import `AsyncBeatsFoundation` instead of `BeatsFoundation` and use `await` with each API call:
+Simply import `AsyncBeatsfoundation` instead of `Beatsfoundation` and use `await` with each API call:
 
 ```python
 import asyncio
-from beats_foundation import AsyncBeatsFoundation
+from beats_foundation import AsyncBeatsfoundation
 
-client = AsyncBeatsFoundation()
+client = AsyncBeatsfoundation()
 
 
 async def main() -> None:
@@ -82,9 +81,9 @@ All errors inherit from `beats_foundation.APIError`.
 
 ```python
 import beats_foundation
-from beats_foundation import BeatsFoundation
+from beats_foundation import Beatsfoundation
 
-client = BeatsFoundation()
+client = Beatsfoundation()
 
 try:
     client.songs.retrieve(
@@ -123,10 +122,10 @@ Connection errors (for example, due to a network connectivity problem), 408 Requ
 You can use the `max_retries` option to configure or disable retry settings:
 
 ```python
-from beats_foundation import BeatsFoundation
+from beats_foundation import Beatsfoundation
 
 # Configure the default for all requests:
-client = BeatsFoundation(
+client = Beatsfoundation(
     # default is 2
     max_retries=0,
 )
@@ -143,16 +142,16 @@ By default requests time out after 1 minute. You can configure this with a `time
 which accepts a float or an [`httpx.Timeout`](https://www.python-httpx.org/advanced/#fine-tuning-the-configuration) object:
 
 ```python
-from beats_foundation import BeatsFoundation
+from beats_foundation import Beatsfoundation
 
 # Configure the default for all requests:
-client = BeatsFoundation(
+client = Beatsfoundation(
     # 20 seconds (default is 1 minute)
     timeout=20.0,
 )
 
 # More granular control:
-client = BeatsFoundation(
+client = Beatsfoundation(
     timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
 )
 
@@ -172,10 +171,10 @@ Note that requests that time out are [retried twice by default](#retries).
 
 We use the standard library [`logging`](https://docs.python.org/3/library/logging.html) module.
 
-You can enable logging by setting the environment variable `BEATS_FOUNDATION_LOG` to `info`.
+You can enable logging by setting the environment variable `BEATSFOUNDATION_LOG` to `info`.
 
 ```shell
-$ export BEATS_FOUNDATION_LOG=info
+$ export BEATSFOUNDATION_LOG=info
 ```
 
 Or to `debug` for more verbose logging.
@@ -197,9 +196,9 @@ if response.my_field is None:
 The "raw" Response object can be accessed by prefixing `.with_raw_response.` to any HTTP method call, e.g.,
 
 ```py
-from beats_foundation import BeatsFoundation
+from beats_foundation import Beatsfoundation
 
-client = BeatsFoundation()
+client = Beatsfoundation()
 response = client.songs.with_raw_response.retrieve(
     "REPLACE_ME",
 )
@@ -275,10 +274,10 @@ You can directly override the [httpx client](https://www.python-httpx.org/api/#c
 
 ```python
 import httpx
-from beats_foundation import BeatsFoundation, DefaultHttpxClient
+from beats_foundation import Beatsfoundation, DefaultHttpxClient
 
-client = BeatsFoundation(
-    # Or use the `BEATS_FOUNDATION_BASE_URL` env var
+client = Beatsfoundation(
+    # Or use the `BEATSFOUNDATION_BASE_URL` env var
     base_url="http://my.test.server.example.com:8083",
     http_client=DefaultHttpxClient(
         proxy="http://my.test.proxy.example.com",
@@ -298,9 +297,9 @@ client.with_options(http_client=DefaultHttpxClient(...))
 By default the library closes underlying HTTP connections whenever the client is [garbage collected](https://docs.python.org/3/reference/datamodel.html#object.__del__). You can manually close the client using the `.close()` method if desired, or with a context manager that closes when exiting.
 
 ```py
-from beats_foundation import BeatsFoundation
+from beats_foundation import Beatsfoundation
 
-with BeatsFoundation() as client:
+with Beatsfoundation() as client:
   # make requests here
   ...
 

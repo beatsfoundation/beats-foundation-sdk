@@ -16,11 +16,11 @@ before making any information public.
 ## Reporting Non-SDK Related Security Issues
 
 If you encounter security issues that are not directly related to SDKs but pertain to the services
-or products provided by Beats Foundation please follow the respective company's security reporting guidelines.
+or products provided by Beatsfoundation please follow the respective company's security reporting guidelines.
 
-### Beats Foundation Terms and Policies
+### Beatsfoundation Terms and Policies
 
-Please contact dev-feedback@beats-foundation.com for any questions or concerns regarding security of our services.
+Please contact dev-feedback@beatsfoundation.com for any questions or concerns regarding security of our services.
 
 ---
 
