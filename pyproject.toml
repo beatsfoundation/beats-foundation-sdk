@@ -1,11 +1,11 @@
 [project]
 name = "beats-foundation"
 version = "0.0.1-alpha.1"
-description = "The official Python library for the beatsfoundation API"
+description = "The official Python library for the beats-foundation API"
 dynamic = ["readme"]
 license = "Apache-2.0"
 authors = [
-{ name = "Beatsfoundation", email = "dev-feedback@beatsfoundation.com" },
+{ name = "Beats Foundation", email = "dev-feedback@beatsfoundation.com" },
 ]
 dependencies = [
     "httpx>=0.23.0, <1",
