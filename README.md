@@ -1,4 +1,4 @@
-# Beats Foundation Python API library
+# AI Creation Engine SDK, by the BEATS AI Foundation 
 
 [![PyPI version](https://img.shields.io/pypi/v/beats_foundation.svg)](https://pypi.org/project/beats_foundation/)
 
