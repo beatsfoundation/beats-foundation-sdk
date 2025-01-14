@@ -6,8 +6,12 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/beats-foundation.svg)](https://pypi.org/project/beats-foundation/)
 
-The AI Creation Engine SDK allows for access to dynamic media generation (starting with songs), by providing convenient access to the Beats Foundation REST API from any Python 3.8+
-application. The library includes type definitions for all request params and response fields,
+The AI Creation Engine SDK allows for access to dynamic media generation (starting with songs, and soon any form of media, such as images, video, etc.), by providing convenient access to the Beats Foundation REST API from any Python 3.8+
+application. 
+
+This makes it easier for you to **develop agents from any framework that would desire any form of media generation capabilities or tool-use.**
+
+The library includes type definitions for all request params and response fields,
 and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
 
