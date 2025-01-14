@@ -1,5 +1,5 @@
 [project]
-name = "beats_foundation"
+name = "beats-foundation"
 version = "0.0.1-alpha.1"
 description = "The official Python library for the beatsfoundation API"
 dynamic = ["readme"]
