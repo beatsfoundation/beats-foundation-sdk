@@ -11,6 +11,8 @@ application.
 
 This makes it easier for you to **develop agents from any framework that would desire any form of media generation capabilities or tool-use.**
 
+The goal of the SDK is to be a well-supported infrastructure library for anyone building agents, no matter if on Eliza, ZerePy, or any other framework.
+
 The library includes type definitions for all request params and response fields,
 and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
