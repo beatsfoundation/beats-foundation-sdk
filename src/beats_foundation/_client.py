@@ -26,7 +26,7 @@ from ._utils import (
 from ._version import __version__
 from .resources import songs
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
-from ._exceptions import APIStatusError, BeatsfoundationError
+from ._exceptions import APIStatusError, BeatsFoundationError
 from ._base_client import (
     DEFAULT_MAX_RETRIES,
     SyncAPIClient,
@@ -38,17 +38,17 @@ __all__ = [
     "Transport",
     "ProxiesTypes",
     "RequestOptions",
-    "Beatsfoundation",
-    "AsyncBeatsfoundation",
+    "BeatsFoundation",
+    "AsyncBeatsFoundation",
     "Client",
     "AsyncClient",
 ]
 
 
-class Beatsfoundation(SyncAPIClient):
+class BeatsFoundation(SyncAPIClient):
     songs: songs.SongsResource
-    with_raw_response: BeatsfoundationWithRawResponse
-    with_streaming_response: BeatsfoundationWithStreamedResponse
+    with_raw_response: BeatsFoundationWithRawResponse
+    with_streaming_response: BeatsFoundationWithStreamedResponse
 
     # client options
     bearer_token: str
@@ -76,20 +76,20 @@ class Beatsfoundation(SyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new synchronous beatsfoundation client instance.
+        """Construct a new synchronous beats-foundation client instance.
 
         This automatically infers the `bearer_token` argument from the `BEATSFOUNDATION_BEARER_TOKEN` environment variable if it is not provided.
         """
         if bearer_token is None:
             bearer_token = os.environ.get("BEATSFOUNDATION_BEARER_TOKEN")
         if bearer_token is None:
-            raise BeatsfoundationError(
+            raise BeatsFoundationError(
                 "The bearer_token client option must be set either by passing bearer_token to the client or by setting the BEATSFOUNDATION_BEARER_TOKEN environment variable"
             )
         self.bearer_token = bearer_token
 
         if base_url is None:
-            base_url = os.environ.get("BEATSFOUNDATION_BASE_URL")
+            base_url = os.environ.get("BEATS_FOUNDATION_BASE_URL")
         if base_url is None:
             base_url = f"https://www.beatsfoundation.com"
 
@@ -105,8 +105,8 @@ class Beatsfoundation(SyncAPIClient):
         )
 
         self.songs = songs.SongsResource(self)
-        self.with_raw_response = BeatsfoundationWithRawResponse(self)
-        self.with_streaming_response = BeatsfoundationWithStreamedResponse(self)
+        self.with_raw_response = BeatsFoundationWithRawResponse(self)
+        self.with_streaming_response = BeatsFoundationWithStreamedResponse(self)
 
     @property
     @override
@@ -213,10 +213,10 @@ class Beatsfoundation(SyncAPIClient):
         return APIStatusError(err_msg, response=response, body=body)
 
 
-class AsyncBeatsfoundation(AsyncAPIClient):
+class AsyncBeatsFoundation(AsyncAPIClient):
     songs: songs.AsyncSongsResource
-    with_raw_response: AsyncBeatsfoundationWithRawResponse
-    with_streaming_response: AsyncBeatsfoundationWithStreamedResponse
+    with_raw_response: AsyncBeatsFoundationWithRawResponse
+    with_streaming_response: AsyncBeatsFoundationWithStreamedResponse
 
     # client options
     bearer_token: str
@@ -244,20 +244,20 @@ class AsyncBeatsfoundation(AsyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new async beatsfoundation client instance.
+        """Construct a new async beats-foundation client instance.
 
         This automatically infers the `bearer_token` argument from the `BEATSFOUNDATION_BEARER_TOKEN` environment variable if it is not provided.
         """
         if bearer_token is None:
             bearer_token = os.environ.get("BEATSFOUNDATION_BEARER_TOKEN")
         if bearer_token is None:
-            raise BeatsfoundationError(
+            raise BeatsFoundationError(
                 "The bearer_token client option must be set either by passing bearer_token to the client or by setting the BEATSFOUNDATION_BEARER_TOKEN environment variable"
             )
         self.bearer_token = bearer_token
 
         if base_url is None:
-            base_url = os.environ.get("BEATSFOUNDATION_BASE_URL")
+            base_url = os.environ.get("BEATS_FOUNDATION_BASE_URL")
         if base_url is None:
             base_url = f"https://www.beatsfoundation.com"
 
@@ -273,8 +273,8 @@ class AsyncBeatsfoundation(AsyncAPIClient):
         )
 
         self.songs = songs.AsyncSongsResource(self)
-        self.with_raw_response = AsyncBeatsfoundationWithRawResponse(self)
-        self.with_streaming_response = AsyncBeatsfoundationWithStreamedResponse(self)
+        self.with_raw_response = AsyncBeatsFoundationWithRawResponse(self)
+        self.with_streaming_response = AsyncBeatsFoundationWithStreamedResponse(self)
 
     @property
     @override
@@ -381,26 +381,26 @@ class AsyncBeatsfoundation(AsyncAPIClient):
         return APIStatusError(err_msg, response=response, body=body)
 
 
-class BeatsfoundationWithRawResponse:
-    def __init__(self, client: Beatsfoundation) -> None:
+class BeatsFoundationWithRawResponse:
+    def __init__(self, client: BeatsFoundation) -> None:
         self.songs = songs.SongsResourceWithRawResponse(client.songs)
 
 
-class AsyncBeatsfoundationWithRawResponse:
-    def __init__(self, client: AsyncBeatsfoundation) -> None:
+class AsyncBeatsFoundationWithRawResponse:
+    def __init__(self, client: AsyncBeatsFoundation) -> None:
         self.songs = songs.AsyncSongsResourceWithRawResponse(client.songs)
 
 
-class BeatsfoundationWithStreamedResponse:
-    def __init__(self, client: Beatsfoundation) -> None:
+class BeatsFoundationWithStreamedResponse:
+    def __init__(self, client: BeatsFoundation) -> None:
         self.songs = songs.SongsResourceWithStreamingResponse(client.songs)
 
 
-class AsyncBeatsfoundationWithStreamedResponse:
-    def __init__(self, client: AsyncBeatsfoundation) -> None:
+class AsyncBeatsFoundationWithStreamedResponse:
+    def __init__(self, client: AsyncBeatsFoundation) -> None:
         self.songs = songs.AsyncSongsResourceWithStreamingResponse(client.songs)
 
 
-Client = Beatsfoundation
+Client = BeatsFoundation
 
-AsyncClient = AsyncBeatsfoundation
+AsyncClient = AsyncBeatsFoundation

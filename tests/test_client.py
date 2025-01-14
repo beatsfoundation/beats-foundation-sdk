@@ -20,14 +20,14 @@ import pytest
 from respx import MockRouter
 from pydantic import ValidationError
 
-from beats_foundation import Beatsfoundation, AsyncBeatsfoundation, APIResponseValidationError
+from beats_foundation import BeatsFoundation, AsyncBeatsFoundation, APIResponseValidationError
 from beats_foundation._types import Omit
 from beats_foundation._models import BaseModel, FinalRequestOptions
 from beats_foundation._constants import RAW_RESPONSE_HEADER
 from beats_foundation._exceptions import (
     APIStatusError,
     APITimeoutError,
-    BeatsfoundationError,
+    BeatsFoundationError,
     APIResponseValidationError,
 )
 from beats_foundation._base_client import (
@@ -53,7 +53,7 @@ def _low_retry_timeout(*_args: Any, **_kwargs: Any) -> float:
     return 0.1
 
 
-def _get_open_connections(client: Beatsfoundation | AsyncBeatsfoundation) -> int:
+def _get_open_connections(client: BeatsFoundation | AsyncBeatsFoundation) -> int:
     transport = client._client._transport
     assert isinstance(transport, httpx.HTTPTransport) or isinstance(transport, httpx.AsyncHTTPTransport)
 
@@ -61,8 +61,8 @@ def _get_open_connections(client: Beatsfoundation | AsyncBeatsfoundation) -> int
     return len(pool._requests)
 
 
-class TestBeatsfoundation:
-    client = Beatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+class TestBeatsFoundation:
+    client = BeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
 
     @pytest.mark.respx(base_url=base_url)
     def test_raw_response(self, respx_mock: MockRouter) -> None:
@@ -109,7 +109,7 @@ class TestBeatsfoundation:
         assert isinstance(self.client.timeout, httpx.Timeout)
 
     def test_copy_default_headers(self) -> None:
-        client = Beatsfoundation(
+        client = BeatsFoundation(
             base_url=base_url,
             bearer_token=bearer_token,
             _strict_response_validation=True,
@@ -146,7 +146,7 @@ class TestBeatsfoundation:
             client.copy(set_default_headers={}, default_headers={"X-Foo": "Bar"})
 
     def test_copy_default_query(self) -> None:
-        client = Beatsfoundation(
+        client = BeatsFoundation(
             base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, default_query={"foo": "bar"}
         )
         assert _get_params(client)["foo"] == "bar"
@@ -271,7 +271,7 @@ class TestBeatsfoundation:
         assert timeout == httpx.Timeout(100.0)
 
     def test_client_timeout_option(self) -> None:
-        client = Beatsfoundation(
+        client = BeatsFoundation(
             base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, timeout=httpx.Timeout(0)
         )
 
@@ -282,7 +282,7 @@ class TestBeatsfoundation:
     def test_http_client_timeout_option(self) -> None:
         # custom timeout given to the httpx client should be used
         with httpx.Client(timeout=None) as http_client:
-            client = Beatsfoundation(
+            client = BeatsFoundation(
                 base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, http_client=http_client
             )
 
@@ -292,7 +292,7 @@ class TestBeatsfoundation:
 
         # no timeout given to the httpx client should not use the httpx default
         with httpx.Client() as http_client:
-            client = Beatsfoundation(
+            client = BeatsFoundation(
                 base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, http_client=http_client
             )
 
@@ -302,7 +302,7 @@ class TestBeatsfoundation:
 
         # explicitly passing the default timeout currently results in it being ignored
         with httpx.Client(timeout=HTTPX_DEFAULT_TIMEOUT) as http_client:
-            client = Beatsfoundation(
+            client = BeatsFoundation(
                 base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, http_client=http_client
             )
 
@@ -313,7 +313,7 @@ class TestBeatsfoundation:
     async def test_invalid_http_client(self) -> None:
         with pytest.raises(TypeError, match="Invalid `http_client` arg"):
             async with httpx.AsyncClient() as http_client:
-                Beatsfoundation(
+                BeatsFoundation(
                     base_url=base_url,
                     bearer_token=bearer_token,
                     _strict_response_validation=True,
@@ -321,7 +321,7 @@ class TestBeatsfoundation:
                 )
 
     def test_default_headers_option(self) -> None:
-        client = Beatsfoundation(
+        client = BeatsFoundation(
             base_url=base_url,
             bearer_token=bearer_token,
             _strict_response_validation=True,
@@ -331,7 +331,7 @@ class TestBeatsfoundation:
         assert request.headers.get("x-foo") == "bar"
         assert request.headers.get("x-stainless-lang") == "python"
 
-        client2 = Beatsfoundation(
+        client2 = BeatsFoundation(
             base_url=base_url,
             bearer_token=bearer_token,
             _strict_response_validation=True,
@@ -345,17 +345,17 @@ class TestBeatsfoundation:
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
 
     def test_validate_headers(self) -> None:
-        client = Beatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        client = BeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("Authorization") == f"Bearer {bearer_token}"
 
-        with pytest.raises(BeatsfoundationError):
+        with pytest.raises(BeatsFoundationError):
             with update_env(**{"BEATSFOUNDATION_BEARER_TOKEN": Omit()}):
-                client2 = Beatsfoundation(base_url=base_url, bearer_token=None, _strict_response_validation=True)
+                client2 = BeatsFoundation(base_url=base_url, bearer_token=None, _strict_response_validation=True)
             _ = client2
 
     def test_default_query_option(self) -> None:
-        client = Beatsfoundation(
+        client = BeatsFoundation(
             base_url=base_url,
             bearer_token=bearer_token,
             _strict_response_validation=True,
@@ -472,7 +472,7 @@ class TestBeatsfoundation:
         params = dict(request.url.params)
         assert params == {"foo": "2"}
 
-    def test_multipart_repeating_array(self, client: Beatsfoundation) -> None:
+    def test_multipart_repeating_array(self, client: BeatsFoundation) -> None:
         request = client._build_request(
             FinalRequestOptions.construct(
                 method="get",
@@ -559,7 +559,7 @@ class TestBeatsfoundation:
         assert response.foo == 2
 
     def test_base_url_setter(self) -> None:
-        client = Beatsfoundation(
+        client = BeatsFoundation(
             base_url="https://example.com/from_init", bearer_token=bearer_token, _strict_response_validation=True
         )
         assert client.base_url == "https://example.com/from_init/"
@@ -569,19 +569,19 @@ class TestBeatsfoundation:
         assert client.base_url == "https://example.com/from_setter/"
 
     def test_base_url_env(self) -> None:
-        with update_env(BEATSFOUNDATION_BASE_URL="http://localhost:5000/from/env"):
-            client = Beatsfoundation(bearer_token=bearer_token, _strict_response_validation=True)
+        with update_env(BEATS_FOUNDATION_BASE_URL="http://localhost:5000/from/env"):
+            client = BeatsFoundation(bearer_token=bearer_token, _strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
     @pytest.mark.parametrize(
         "client",
         [
-            Beatsfoundation(
+            BeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
             ),
-            Beatsfoundation(
+            BeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
@@ -590,7 +590,7 @@ class TestBeatsfoundation:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_base_url_trailing_slash(self, client: Beatsfoundation) -> None:
+    def test_base_url_trailing_slash(self, client: BeatsFoundation) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -603,12 +603,12 @@ class TestBeatsfoundation:
     @pytest.mark.parametrize(
         "client",
         [
-            Beatsfoundation(
+            BeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
             ),
-            Beatsfoundation(
+            BeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
@@ -617,7 +617,7 @@ class TestBeatsfoundation:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_base_url_no_trailing_slash(self, client: Beatsfoundation) -> None:
+    def test_base_url_no_trailing_slash(self, client: BeatsFoundation) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -630,12 +630,12 @@ class TestBeatsfoundation:
     @pytest.mark.parametrize(
         "client",
         [
-            Beatsfoundation(
+            BeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
             ),
-            Beatsfoundation(
+            BeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
@@ -644,7 +644,7 @@ class TestBeatsfoundation:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_absolute_request_url(self, client: Beatsfoundation) -> None:
+    def test_absolute_request_url(self, client: BeatsFoundation) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -655,7 +655,7 @@ class TestBeatsfoundation:
         assert request.url == "https://myapi.com/foo"
 
     def test_copied_client_does_not_close_http(self) -> None:
-        client = Beatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        client = BeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
         assert not client.is_closed()
 
         copied = client.copy()
@@ -666,7 +666,7 @@ class TestBeatsfoundation:
         assert not client.is_closed()
 
     def test_client_context_manager(self) -> None:
-        client = Beatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        client = BeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
         with client as c2:
             assert c2 is client
             assert not c2.is_closed()
@@ -687,7 +687,7 @@ class TestBeatsfoundation:
 
     def test_client_max_retries_validation(self) -> None:
         with pytest.raises(TypeError, match=r"max_retries cannot be None"):
-            Beatsfoundation(
+            BeatsFoundation(
                 base_url=base_url,
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
@@ -701,12 +701,12 @@ class TestBeatsfoundation:
 
         respx_mock.get("/foo").mock(return_value=httpx.Response(200, text="my-custom-format"))
 
-        strict_client = Beatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        strict_client = BeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
 
         with pytest.raises(APIResponseValidationError):
             strict_client.get("/foo", cast_to=Model)
 
-        client = Beatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=False)
+        client = BeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=False)
 
         response = client.get("/foo", cast_to=Model)
         assert isinstance(response, str)  # type: ignore[unreachable]
@@ -734,7 +734,7 @@ class TestBeatsfoundation:
     )
     @mock.patch("time.time", mock.MagicMock(return_value=1696004797))
     def test_parse_retry_after_header(self, remaining_retries: int, retry_after: str, timeout: float) -> None:
-        client = Beatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        client = BeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
 
         headers = httpx.Headers({"retry-after": retry_after})
         options = FinalRequestOptions(method="get", url="/foo", max_retries=3)
@@ -771,7 +771,7 @@ class TestBeatsfoundation:
     @pytest.mark.parametrize("failure_mode", ["status", "exception"])
     def test_retries_taken(
         self,
-        client: Beatsfoundation,
+        client: BeatsFoundation,
         failures_before_success: int,
         failure_mode: Literal["status", "exception"],
         respx_mock: MockRouter,
@@ -800,7 +800,7 @@ class TestBeatsfoundation:
     @mock.patch("beats_foundation._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_omit_retry_count_header(
-        self, client: Beatsfoundation, failures_before_success: int, respx_mock: MockRouter
+        self, client: BeatsFoundation, failures_before_success: int, respx_mock: MockRouter
     ) -> None:
         client = client.with_options(max_retries=4)
 
@@ -823,7 +823,7 @@ class TestBeatsfoundation:
     @mock.patch("beats_foundation._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_overwrite_retry_count_header(
-        self, client: Beatsfoundation, failures_before_success: int, respx_mock: MockRouter
+        self, client: BeatsFoundation, failures_before_success: int, respx_mock: MockRouter
     ) -> None:
         client = client.with_options(max_retries=4)
 
@@ -843,8 +843,8 @@ class TestBeatsfoundation:
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 
 
-class TestAsyncBeatsfoundation:
-    client = AsyncBeatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+class TestAsyncBeatsFoundation:
+    client = AsyncBeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
 
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
@@ -893,7 +893,7 @@ class TestAsyncBeatsfoundation:
         assert isinstance(self.client.timeout, httpx.Timeout)
 
     def test_copy_default_headers(self) -> None:
-        client = AsyncBeatsfoundation(
+        client = AsyncBeatsFoundation(
             base_url=base_url,
             bearer_token=bearer_token,
             _strict_response_validation=True,
@@ -930,7 +930,7 @@ class TestAsyncBeatsfoundation:
             client.copy(set_default_headers={}, default_headers={"X-Foo": "Bar"})
 
     def test_copy_default_query(self) -> None:
-        client = AsyncBeatsfoundation(
+        client = AsyncBeatsFoundation(
             base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, default_query={"foo": "bar"}
         )
         assert _get_params(client)["foo"] == "bar"
@@ -1055,7 +1055,7 @@ class TestAsyncBeatsfoundation:
         assert timeout == httpx.Timeout(100.0)
 
     async def test_client_timeout_option(self) -> None:
-        client = AsyncBeatsfoundation(
+        client = AsyncBeatsFoundation(
             base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, timeout=httpx.Timeout(0)
         )
 
@@ -1066,7 +1066,7 @@ class TestAsyncBeatsfoundation:
     async def test_http_client_timeout_option(self) -> None:
         # custom timeout given to the httpx client should be used
         async with httpx.AsyncClient(timeout=None) as http_client:
-            client = AsyncBeatsfoundation(
+            client = AsyncBeatsFoundation(
                 base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, http_client=http_client
             )
 
@@ -1076,7 +1076,7 @@ class TestAsyncBeatsfoundation:
 
         # no timeout given to the httpx client should not use the httpx default
         async with httpx.AsyncClient() as http_client:
-            client = AsyncBeatsfoundation(
+            client = AsyncBeatsFoundation(
                 base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, http_client=http_client
             )
 
@@ -1086,7 +1086,7 @@ class TestAsyncBeatsfoundation:
 
         # explicitly passing the default timeout currently results in it being ignored
         async with httpx.AsyncClient(timeout=HTTPX_DEFAULT_TIMEOUT) as http_client:
-            client = AsyncBeatsfoundation(
+            client = AsyncBeatsFoundation(
                 base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True, http_client=http_client
             )
 
@@ -1097,7 +1097,7 @@ class TestAsyncBeatsfoundation:
     def test_invalid_http_client(self) -> None:
         with pytest.raises(TypeError, match="Invalid `http_client` arg"):
             with httpx.Client() as http_client:
-                AsyncBeatsfoundation(
+                AsyncBeatsFoundation(
                     base_url=base_url,
                     bearer_token=bearer_token,
                     _strict_response_validation=True,
@@ -1105,7 +1105,7 @@ class TestAsyncBeatsfoundation:
                 )
 
     def test_default_headers_option(self) -> None:
-        client = AsyncBeatsfoundation(
+        client = AsyncBeatsFoundation(
             base_url=base_url,
             bearer_token=bearer_token,
             _strict_response_validation=True,
@@ -1115,7 +1115,7 @@ class TestAsyncBeatsfoundation:
         assert request.headers.get("x-foo") == "bar"
         assert request.headers.get("x-stainless-lang") == "python"
 
-        client2 = AsyncBeatsfoundation(
+        client2 = AsyncBeatsFoundation(
             base_url=base_url,
             bearer_token=bearer_token,
             _strict_response_validation=True,
@@ -1129,17 +1129,17 @@ class TestAsyncBeatsfoundation:
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
 
     def test_validate_headers(self) -> None:
-        client = AsyncBeatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        client = AsyncBeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("Authorization") == f"Bearer {bearer_token}"
 
-        with pytest.raises(BeatsfoundationError):
+        with pytest.raises(BeatsFoundationError):
             with update_env(**{"BEATSFOUNDATION_BEARER_TOKEN": Omit()}):
-                client2 = AsyncBeatsfoundation(base_url=base_url, bearer_token=None, _strict_response_validation=True)
+                client2 = AsyncBeatsFoundation(base_url=base_url, bearer_token=None, _strict_response_validation=True)
             _ = client2
 
     def test_default_query_option(self) -> None:
-        client = AsyncBeatsfoundation(
+        client = AsyncBeatsFoundation(
             base_url=base_url,
             bearer_token=bearer_token,
             _strict_response_validation=True,
@@ -1256,7 +1256,7 @@ class TestAsyncBeatsfoundation:
         params = dict(request.url.params)
         assert params == {"foo": "2"}
 
-    def test_multipart_repeating_array(self, async_client: AsyncBeatsfoundation) -> None:
+    def test_multipart_repeating_array(self, async_client: AsyncBeatsFoundation) -> None:
         request = async_client._build_request(
             FinalRequestOptions.construct(
                 method="get",
@@ -1343,7 +1343,7 @@ class TestAsyncBeatsfoundation:
         assert response.foo == 2
 
     def test_base_url_setter(self) -> None:
-        client = AsyncBeatsfoundation(
+        client = AsyncBeatsFoundation(
             base_url="https://example.com/from_init", bearer_token=bearer_token, _strict_response_validation=True
         )
         assert client.base_url == "https://example.com/from_init/"
@@ -1353,19 +1353,19 @@ class TestAsyncBeatsfoundation:
         assert client.base_url == "https://example.com/from_setter/"
 
     def test_base_url_env(self) -> None:
-        with update_env(BEATSFOUNDATION_BASE_URL="http://localhost:5000/from/env"):
-            client = AsyncBeatsfoundation(bearer_token=bearer_token, _strict_response_validation=True)
+        with update_env(BEATS_FOUNDATION_BASE_URL="http://localhost:5000/from/env"):
+            client = AsyncBeatsFoundation(bearer_token=bearer_token, _strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
     @pytest.mark.parametrize(
         "client",
         [
-            AsyncBeatsfoundation(
+            AsyncBeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
             ),
-            AsyncBeatsfoundation(
+            AsyncBeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
@@ -1374,7 +1374,7 @@ class TestAsyncBeatsfoundation:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_base_url_trailing_slash(self, client: AsyncBeatsfoundation) -> None:
+    def test_base_url_trailing_slash(self, client: AsyncBeatsFoundation) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -1387,12 +1387,12 @@ class TestAsyncBeatsfoundation:
     @pytest.mark.parametrize(
         "client",
         [
-            AsyncBeatsfoundation(
+            AsyncBeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
             ),
-            AsyncBeatsfoundation(
+            AsyncBeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
@@ -1401,7 +1401,7 @@ class TestAsyncBeatsfoundation:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_base_url_no_trailing_slash(self, client: AsyncBeatsfoundation) -> None:
+    def test_base_url_no_trailing_slash(self, client: AsyncBeatsFoundation) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -1414,12 +1414,12 @@ class TestAsyncBeatsfoundation:
     @pytest.mark.parametrize(
         "client",
         [
-            AsyncBeatsfoundation(
+            AsyncBeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
             ),
-            AsyncBeatsfoundation(
+            AsyncBeatsFoundation(
                 base_url="http://localhost:5000/custom/path/",
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
@@ -1428,7 +1428,7 @@ class TestAsyncBeatsfoundation:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_absolute_request_url(self, client: AsyncBeatsfoundation) -> None:
+    def test_absolute_request_url(self, client: AsyncBeatsFoundation) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -1439,7 +1439,7 @@ class TestAsyncBeatsfoundation:
         assert request.url == "https://myapi.com/foo"
 
     async def test_copied_client_does_not_close_http(self) -> None:
-        client = AsyncBeatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        client = AsyncBeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
         assert not client.is_closed()
 
         copied = client.copy()
@@ -1451,7 +1451,7 @@ class TestAsyncBeatsfoundation:
         assert not client.is_closed()
 
     async def test_client_context_manager(self) -> None:
-        client = AsyncBeatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        client = AsyncBeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
         async with client as c2:
             assert c2 is client
             assert not c2.is_closed()
@@ -1473,7 +1473,7 @@ class TestAsyncBeatsfoundation:
 
     async def test_client_max_retries_validation(self) -> None:
         with pytest.raises(TypeError, match=r"max_retries cannot be None"):
-            AsyncBeatsfoundation(
+            AsyncBeatsFoundation(
                 base_url=base_url,
                 bearer_token=bearer_token,
                 _strict_response_validation=True,
@@ -1488,14 +1488,14 @@ class TestAsyncBeatsfoundation:
 
         respx_mock.get("/foo").mock(return_value=httpx.Response(200, text="my-custom-format"))
 
-        strict_client = AsyncBeatsfoundation(
+        strict_client = AsyncBeatsFoundation(
             base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True
         )
 
         with pytest.raises(APIResponseValidationError):
             await strict_client.get("/foo", cast_to=Model)
 
-        client = AsyncBeatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=False)
+        client = AsyncBeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=False)
 
         response = await client.get("/foo", cast_to=Model)
         assert isinstance(response, str)  # type: ignore[unreachable]
@@ -1524,7 +1524,7 @@ class TestAsyncBeatsfoundation:
     @mock.patch("time.time", mock.MagicMock(return_value=1696004797))
     @pytest.mark.asyncio
     async def test_parse_retry_after_header(self, remaining_retries: int, retry_after: str, timeout: float) -> None:
-        client = AsyncBeatsfoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        client = AsyncBeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
 
         headers = httpx.Headers({"retry-after": retry_after})
         options = FinalRequestOptions(method="get", url="/foo", max_retries=3)
@@ -1562,7 +1562,7 @@ class TestAsyncBeatsfoundation:
     @pytest.mark.parametrize("failure_mode", ["status", "exception"])
     async def test_retries_taken(
         self,
-        async_client: AsyncBeatsfoundation,
+        async_client: AsyncBeatsFoundation,
         failures_before_success: int,
         failure_mode: Literal["status", "exception"],
         respx_mock: MockRouter,
@@ -1592,7 +1592,7 @@ class TestAsyncBeatsfoundation:
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
     async def test_omit_retry_count_header(
-        self, async_client: AsyncBeatsfoundation, failures_before_success: int, respx_mock: MockRouter
+        self, async_client: AsyncBeatsFoundation, failures_before_success: int, respx_mock: MockRouter
     ) -> None:
         client = async_client.with_options(max_retries=4)
 
@@ -1618,7 +1618,7 @@ class TestAsyncBeatsfoundation:
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
     async def test_overwrite_retry_count_header(
-        self, async_client: AsyncBeatsfoundation, failures_before_success: int, respx_mock: MockRouter
+        self, async_client: AsyncBeatsFoundation, failures_before_success: int, respx_mock: MockRouter
     ) -> None:
         client = async_client.with_options(max_retries=4)
 

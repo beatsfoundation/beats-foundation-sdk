@@ -18,11 +18,11 @@ __all__ = [
 ]
 
 
-class BeatsfoundationError(Exception):
+class BeatsFoundationError(Exception):
     pass
 
 
-class APIError(BeatsfoundationError):
+class APIError(BeatsFoundationError):
     message: str
     request: httpx.Request
 
