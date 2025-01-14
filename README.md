@@ -24,9 +24,14 @@ pip install --pre beats_foundation
 The full API of this library can be found in [api.md](api.md).
 
 ```python
+import os
 from beats_foundation import Beatsfoundation
 
-client = Beatsfoundation()
+client = Beatsfoundation(
+    bearer_token=os.environ.get(
+        "BEATSFOUNDATION_BEARER_TOKEN"
+    ),  # This is the default and can be omitted
+)
 
 song = client.songs.retrieve(
     "REPLACE_ME",
@@ -44,10 +49,15 @@ so that your Bearer Token is not stored in source control.
 Simply import `AsyncBeatsfoundation` instead of `Beatsfoundation` and use `await` with each API call:
 
 ```python
+import os
 import asyncio
 from beats_foundation import AsyncBeatsfoundation
 
-client = AsyncBeatsfoundation()
+client = AsyncBeatsfoundation(
+    bearer_token=os.environ.get(
+        "BEATSFOUNDATION_BEARER_TOKEN"
+    ),  # This is the default and can be omitted
+)
 
 
 async def main() -> None:

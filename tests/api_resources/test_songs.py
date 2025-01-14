@@ -9,7 +9,7 @@ import pytest
 
 from tests.utils import assert_matches_type
 from beats_foundation import Beatsfoundation, AsyncBeatsfoundation
-from beats_foundation.types import Song, SongListResponse
+from beats_foundation.types import Song, SongListResponse, SongCreateResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -22,7 +22,7 @@ class TestSongs:
         song = client.songs.create(
             prompt="prompt",
         )
-        assert_matches_type(object, song, path=["response"])
+        assert_matches_type(SongCreateResponse, song, path=["response"])
 
     @parametrize
     def test_method_create_with_all_params(self, client: Beatsfoundation) -> None:
@@ -33,7 +33,7 @@ class TestSongs:
             lyrics="lyrics",
             mood="mood",
         )
-        assert_matches_type(object, song, path=["response"])
+        assert_matches_type(SongCreateResponse, song, path=["response"])
 
     @parametrize
     def test_raw_response_create(self, client: Beatsfoundation) -> None:
@@ -44,7 +44,7 @@ class TestSongs:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         song = response.parse()
-        assert_matches_type(object, song, path=["response"])
+        assert_matches_type(SongCreateResponse, song, path=["response"])
 
     @parametrize
     def test_streaming_response_create(self, client: Beatsfoundation) -> None:
@@ -55,7 +55,7 @@ class TestSongs:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             song = response.parse()
-            assert_matches_type(object, song, path=["response"])
+            assert_matches_type(SongCreateResponse, song, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -139,7 +139,7 @@ class TestAsyncSongs:
         song = await async_client.songs.create(
             prompt="prompt",
         )
-        assert_matches_type(object, song, path=["response"])
+        assert_matches_type(SongCreateResponse, song, path=["response"])
 
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncBeatsfoundation) -> None:
@@ -150,7 +150,7 @@ class TestAsyncSongs:
             lyrics="lyrics",
             mood="mood",
         )
-        assert_matches_type(object, song, path=["response"])
+        assert_matches_type(SongCreateResponse, song, path=["response"])
 
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncBeatsfoundation) -> None:
@@ -161,7 +161,7 @@ class TestAsyncSongs:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         song = await response.parse()
-        assert_matches_type(object, song, path=["response"])
+        assert_matches_type(SongCreateResponse, song, path=["response"])
 
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncBeatsfoundation) -> None:
@@ -172,7 +172,7 @@ class TestAsyncSongs:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             song = await response.parse()
-            assert_matches_type(object, song, path=["response"])
+            assert_matches_type(SongCreateResponse, song, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
