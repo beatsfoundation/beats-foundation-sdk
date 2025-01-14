@@ -11,19 +11,22 @@ __all__ = ["SongCreateParams"]
 
 class SongCreateParams(TypedDict, total=False):
     prompt: Required[str]
-    """Text prompt for song generation"""
-
-    creator_wallet_address: Annotated[str, PropertyInfo(alias="creatorWalletAddress")]
-    """Wallet address of the creator"""
+    """Text prompt for song generation (max 200 characters)"""
 
     genre: str
     """Musical genre"""
 
     is_instrumental: Annotated[bool, PropertyInfo(alias="isInstrumental")]
-    """Whether the song should be instrumental"""
+    """Whether the song should be instrumental.
+
+    If the song is instrumental, the lyrics will be ignored.
+    """
 
     lyrics: str
-    """Optional lyrics for the song"""
+    """Optional lyrics for the song.
+
+    If not provided, the prompt will be used to generate lyrics.
+    """
 
     mood: str
     """Mood of the song"""

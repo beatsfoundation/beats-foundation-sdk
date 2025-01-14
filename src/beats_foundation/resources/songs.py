@@ -49,7 +49,6 @@ class SongsResource(SyncAPIResource):
         self,
         *,
         prompt: str,
-        creator_wallet_address: str | NotGiven = NOT_GIVEN,
         genre: str | NotGiven = NOT_GIVEN,
         is_instrumental: bool | NotGiven = NOT_GIVEN,
         lyrics: str | NotGiven = NOT_GIVEN,
@@ -67,15 +66,15 @@ class SongsResource(SyncAPIResource):
         hour per API key.
 
         Args:
-          prompt: Text prompt for song generation
-
-          creator_wallet_address: Wallet address of the creator
+          prompt: Text prompt for song generation (max 200 characters)
 
           genre: Musical genre
 
-          is_instrumental: Whether the song should be instrumental
+          is_instrumental: Whether the song should be instrumental. If the song is instrumental, the lyrics
+              will be ignored.
 
-          lyrics: Optional lyrics for the song
+          lyrics: Optional lyrics for the song. If not provided, the prompt will be used to
+              generate lyrics.
 
           mood: Mood of the song
 
@@ -92,7 +91,6 @@ class SongsResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "prompt": prompt,
-                    "creator_wallet_address": creator_wallet_address,
                     "genre": genre,
                     "is_instrumental": is_instrumental,
                     "lyrics": lyrics,
@@ -210,7 +208,6 @@ class AsyncSongsResource(AsyncAPIResource):
         self,
         *,
         prompt: str,
-        creator_wallet_address: str | NotGiven = NOT_GIVEN,
         genre: str | NotGiven = NOT_GIVEN,
         is_instrumental: bool | NotGiven = NOT_GIVEN,
         lyrics: str | NotGiven = NOT_GIVEN,
@@ -228,15 +225,15 @@ class AsyncSongsResource(AsyncAPIResource):
         hour per API key.
 
         Args:
-          prompt: Text prompt for song generation
-
-          creator_wallet_address: Wallet address of the creator
+          prompt: Text prompt for song generation (max 200 characters)
 
           genre: Musical genre
 
-          is_instrumental: Whether the song should be instrumental
+          is_instrumental: Whether the song should be instrumental. If the song is instrumental, the lyrics
+              will be ignored.
 
-          lyrics: Optional lyrics for the song
+          lyrics: Optional lyrics for the song. If not provided, the prompt will be used to
+              generate lyrics.
 
           mood: Mood of the song
 
@@ -253,7 +250,6 @@ class AsyncSongsResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "prompt": prompt,
-                    "creator_wallet_address": creator_wallet_address,
                     "genre": genre,
                     "is_instrumental": is_instrumental,
                     "lyrics": lyrics,
