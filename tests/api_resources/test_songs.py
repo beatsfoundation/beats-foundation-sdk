@@ -28,7 +28,6 @@ class TestSongs:
     def test_method_create_with_all_params(self, client: Beatsfoundation) -> None:
         song = client.songs.create(
             prompt="prompt",
-            creator_wallet_address="creatorWalletAddress",
             genre="genre",
             is_instrumental=True,
             lyrics="lyrics",
@@ -146,7 +145,6 @@ class TestAsyncSongs:
     async def test_method_create_with_all_params(self, async_client: AsyncBeatsfoundation) -> None:
         song = await async_client.songs.create(
             prompt="prompt",
-            creator_wallet_address="creatorWalletAddress",
             genre="genre",
             is_instrumental=True,
             lyrics="lyrics",
