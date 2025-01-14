@@ -1,7 +1,7 @@
 # AI Creation Engine SDK, by BEATS AI
 
 <p align="center">
-  <img width="397" height="397" src="https://www.beatsfoundation.com/beats_pfp.jpg">
+  <img width="300" height="300" src="https://www.beatsfoundation.com/beats_pfp.jpg">
 </p>
 
 [![PyPI version](https://img.shields.io/pypi/v/beats-foundation.svg)](https://pypi.org/project/beats-foundation/)
