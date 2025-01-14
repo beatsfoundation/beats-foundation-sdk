@@ -1,8 +1,8 @@
-# AI Creation Engine SDK, by the BEATS AI Foundation 
+# Beats Foundation Python API library
 
-[![PyPI version](https://img.shields.io/pypi/v/beats_foundation.svg)](https://pypi.org/project/beats_foundation/)
+[![PyPI version](https://img.shields.io/pypi/v/beats-foundation.svg)](https://pypi.org/project/beats-foundation/)
 
-The AI Creation Engine SDK, by the BEATS AI Foundation, provides convenient access to the AI Creation Engine REST API from any Python 3.8+
+The Beats Foundation Python library provides convenient access to the Beats Foundation REST API from any Python 3.8+
 application. The library includes type definitions for all request params and response fields,
 and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
@@ -10,13 +10,13 @@ It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ## Documentation
 
-The REST API documentation can be found on [docs.beats-foundation.com](https://docs.beats-foundation.com). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.beatsfoundation.com](https://docs.beatsfoundation.com). The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
 ```sh
 # install from PyPI
-pip install --pre beats_foundation
+pip install --pre beats-foundation
 ```
 
 ## Usage
@@ -24,9 +24,14 @@ pip install --pre beats_foundation
 The full API of this library can be found in [api.md](api.md).
 
 ```python
+import os
 from beats_foundation import BeatsFoundation
 
-client = BeatsFoundation()
+client = BeatsFoundation(
+    bearer_token=os.environ.get(
+        "BEATSFOUNDATION_BEARER_TOKEN"
+    ),  # This is the default and can be omitted
+)
 
 song = client.songs.retrieve(
     "REPLACE_ME",
@@ -44,10 +49,15 @@ so that your Bearer Token is not stored in source control.
 Simply import `AsyncBeatsFoundation` instead of `BeatsFoundation` and use `await` with each API call:
 
 ```python
+import os
 import asyncio
 from beats_foundation import AsyncBeatsFoundation
 
-client = AsyncBeatsFoundation()
+client = AsyncBeatsFoundation(
+    bearer_token=os.environ.get(
+        "BEATSFOUNDATION_BEARER_TOKEN"
+    ),  # This is the default and can be omitted
+)
 
 
 async def main() -> None:

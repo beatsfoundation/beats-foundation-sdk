@@ -20,7 +20,7 @@ or products provided by Beats Foundation please follow the respective company's 
 
 ### Beats Foundation Terms and Policies
 
-Please contact dev-feedback@beats-foundation.com for any questions or concerns regarding security of our services.
+Please contact dev-feedback@beatsfoundation.com for any questions or concerns regarding security of our services.
 
 ---
 

@@ -91,7 +91,7 @@ class BeatsFoundation(SyncAPIClient):
         if base_url is None:
             base_url = os.environ.get("BEATS_FOUNDATION_BASE_URL")
         if base_url is None:
-            base_url = f"https://www.beatsfoundation.com/api"
+            base_url = f"https://www.beatsfoundation.com"
 
         super().__init__(
             version=__version__,
@@ -259,7 +259,7 @@ class AsyncBeatsFoundation(AsyncAPIClient):
         if base_url is None:
             base_url = os.environ.get("BEATS_FOUNDATION_BASE_URL")
         if base_url is None:
-            base_url = f"https://www.beatsfoundation.com/api"
+            base_url = f"https://www.beatsfoundation.com"
 
         super().__init__(
             version=__version__,

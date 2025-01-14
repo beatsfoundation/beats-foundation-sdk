@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.0-alpha.1 (2025-01-14)
+
+Full Changelog: [v0.0.1-alpha.1...v0.1.0-alpha.1](https://github.com/beatsfoundation/beats-foundation-sdk/compare/v0.0.1-alpha.1...v0.1.0-alpha.1)
+
+### Features
+
+* **api:** api update ([#8](https://github.com/beatsfoundation/beats-foundation-sdk/issues/8)) ([abe66f1](https://github.com/beatsfoundation/beats-foundation-sdk/commit/abe66f1a8d13dc74b713c81c26d824819b2ca0ac))
+* **api:** api update ([#9](https://github.com/beatsfoundation/beats-foundation-sdk/issues/9)) ([126444e](https://github.com/beatsfoundation/beats-foundation-sdk/commit/126444eb9473a7c1da054741c7f9aa658cb30dbd))
+* **api:** update via SDK Studio ([#6](https://github.com/beatsfoundation/beats-foundation-sdk/issues/6)) ([94dcca5](https://github.com/beatsfoundation/beats-foundation-sdk/commit/94dcca579b38b9c238093de3617f425934432f44))
+
+
+### Chores
+
+* remove custom code ([7cef31e](https://github.com/beatsfoundation/beats-foundation-sdk/commit/7cef31ea40ff84ec06b17bf92d487e9c011557ec))
+* update SDK settings ([#10](https://github.com/beatsfoundation/beats-foundation-sdk/issues/10)) ([8e3d6b5](https://github.com/beatsfoundation/beats-foundation-sdk/commit/8e3d6b51086c021cf77aee85ba8b79794dfa1ae0))
+
 ## 0.0.1-alpha.1 (2025-01-13)
 
 Full Changelog: [v0.0.1-alpha.0...v0.0.1-alpha.1](https://github.com/beatsfoundation/beats-foundation-sdk/compare/v0.0.1-alpha.0...v0.0.1-alpha.1)

@@ -24,7 +24,12 @@ from beats_foundation import BeatsFoundation, AsyncBeatsFoundation, APIResponseV
 from beats_foundation._types import Omit
 from beats_foundation._models import BaseModel, FinalRequestOptions
 from beats_foundation._constants import RAW_RESPONSE_HEADER
-from beats_foundation._exceptions import APIStatusError, APITimeoutError, APIResponseValidationError
+from beats_foundation._exceptions import (
+    APIStatusError,
+    APITimeoutError,
+    BeatsFoundationError,
+    APIResponseValidationError,
+)
 from beats_foundation._base_client import (
     DEFAULT_TIMEOUT,
     HTTPX_DEFAULT_TIMEOUT,
@@ -338,6 +343,16 @@ class TestBeatsFoundation:
         request = client2._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "stainless"
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
+
+    def test_validate_headers(self) -> None:
+        client = BeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
+        assert request.headers.get("Authorization") == f"Bearer {bearer_token}"
+
+        with pytest.raises(BeatsFoundationError):
+            with update_env(**{"BEATSFOUNDATION_BEARER_TOKEN": Omit()}):
+                client2 = BeatsFoundation(base_url=base_url, bearer_token=None, _strict_response_validation=True)
+            _ = client2
 
     def test_default_query_option(self) -> None:
         client = BeatsFoundation(
@@ -1112,6 +1127,16 @@ class TestAsyncBeatsFoundation:
         request = client2._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "stainless"
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
+
+    def test_validate_headers(self) -> None:
+        client = AsyncBeatsFoundation(base_url=base_url, bearer_token=bearer_token, _strict_response_validation=True)
+        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
+        assert request.headers.get("Authorization") == f"Bearer {bearer_token}"
+
+        with pytest.raises(BeatsFoundationError):
+            with update_env(**{"BEATSFOUNDATION_BEARER_TOKEN": Omit()}):
+                client2 = AsyncBeatsFoundation(base_url=base_url, bearer_token=None, _strict_response_validation=True)
+            _ = client2
 
     def test_default_query_option(self) -> None:
         client = AsyncBeatsFoundation(

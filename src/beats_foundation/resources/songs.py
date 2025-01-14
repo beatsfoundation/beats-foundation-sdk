@@ -21,6 +21,7 @@ from .._response import (
 from ..types.song import Song
 from .._base_client import make_request_options
 from ..types.song_list_response import SongListResponse
+from ..types.song_create_response import SongCreateResponse
 
 __all__ = ["SongsResource", "AsyncSongsResource"]
 
@@ -49,7 +50,6 @@ class SongsResource(SyncAPIResource):
         self,
         *,
         prompt: str,
-        creator_wallet_address: str | NotGiven = NOT_GIVEN,
         genre: str | NotGiven = NOT_GIVEN,
         is_instrumental: bool | NotGiven = NOT_GIVEN,
         lyrics: str | NotGiven = NOT_GIVEN,
@@ -60,22 +60,22 @@ class SongsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> object:
+    ) -> SongCreateResponse:
         """Generate a new AI song based on provided parameters.
 
         Rate limited to 2 calls per
         hour per API key.
 
         Args:
-          prompt: Text prompt for song generation
-
-          creator_wallet_address: Wallet address of the creator
+          prompt: Text prompt for song generation (max 200 characters)
 
           genre: Musical genre
 
-          is_instrumental: Whether the song should be instrumental
+          is_instrumental: Whether the song should be instrumental. If the song is instrumental, the lyrics
+              will be ignored.
 
-          lyrics: Optional lyrics for the song
+          lyrics: Optional lyrics for the song. If not provided, the prompt will be used to
+              generate lyrics.
 
           mood: Mood of the song
 
@@ -92,7 +92,6 @@ class SongsResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "prompt": prompt,
-                    "creator_wallet_address": creator_wallet_address,
                     "genre": genre,
                     "is_instrumental": is_instrumental,
                     "lyrics": lyrics,
@@ -103,7 +102,7 @@ class SongsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=object,
+            cast_to=SongCreateResponse,
         )
 
     def retrieve(
@@ -210,7 +209,6 @@ class AsyncSongsResource(AsyncAPIResource):
         self,
         *,
         prompt: str,
-        creator_wallet_address: str | NotGiven = NOT_GIVEN,
         genre: str | NotGiven = NOT_GIVEN,
         is_instrumental: bool | NotGiven = NOT_GIVEN,
         lyrics: str | NotGiven = NOT_GIVEN,
@@ -221,22 +219,22 @@ class AsyncSongsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> object:
+    ) -> SongCreateResponse:
         """Generate a new AI song based on provided parameters.
 
         Rate limited to 2 calls per
         hour per API key.
 
         Args:
-          prompt: Text prompt for song generation
-
-          creator_wallet_address: Wallet address of the creator
+          prompt: Text prompt for song generation (max 200 characters)
 
           genre: Musical genre
 
-          is_instrumental: Whether the song should be instrumental
+          is_instrumental: Whether the song should be instrumental. If the song is instrumental, the lyrics
+              will be ignored.
 
-          lyrics: Optional lyrics for the song
+          lyrics: Optional lyrics for the song. If not provided, the prompt will be used to
+              generate lyrics.
 
           mood: Mood of the song
 
@@ -253,7 +251,6 @@ class AsyncSongsResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "prompt": prompt,
-                    "creator_wallet_address": creator_wallet_address,
                     "genre": genre,
                     "is_instrumental": is_instrumental,
                     "lyrics": lyrics,
@@ -264,7 +261,7 @@ class AsyncSongsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=object,
+            cast_to=SongCreateResponse,
         )
 
     async def retrieve(
