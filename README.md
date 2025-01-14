@@ -1,8 +1,8 @@
-# Beats Foundation Python API library
+# AI Creation Engine SDK, by the BEATS AI Foundation 
 
 [![PyPI version](https://img.shields.io/pypi/v/beats_foundation.svg)](https://pypi.org/project/beats_foundation/)
 
-The Beats Foundation Python library provides convenient access to the Beats Foundation REST API from any Python 3.8+
+The AI Creation Engine SDK, by the BEATS AI Foundation, provides convenient access to the AI Creation Engine REST API from any Python 3.8+
 application. The library includes type definitions for all request params and response fields,
 and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
