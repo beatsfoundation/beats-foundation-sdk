@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-01-17)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/beatsfoundation/beats-foundation-sdk/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Chores
+
+* **internal:** codegen related update ([#15](https://github.com/beatsfoundation/beats-foundation-sdk/issues/15)) ([fee05a8](https://github.com/beatsfoundation/beats-foundation-sdk/commit/fee05a8e277dcf0cbe2b8fd187c95b4b20b10389))
+
 ## 0.1.0-alpha.1 (2025-01-14)
 
 Full Changelog: [v0.0.1-alpha.1...v0.1.0-alpha.1](https://github.com/beatsfoundation/beats-foundation-sdk/compare/v0.0.1-alpha.1...v0.1.0-alpha.1)
