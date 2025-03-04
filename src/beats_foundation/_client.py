@@ -76,7 +76,7 @@ class BeatsFoundation(SyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new synchronous beats-foundation client instance.
+        """Construct a new synchronous BeatsFoundation client instance.
 
         This automatically infers the `bearer_token` argument from the `BEATSFOUNDATION_BEARER_TOKEN` environment variable if it is not provided.
         """
@@ -244,7 +244,7 @@ class AsyncBeatsFoundation(AsyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new async beats-foundation client instance.
+        """Construct a new async AsyncBeatsFoundation client instance.
 
         This automatically infers the `bearer_token` argument from the `BEATSFOUNDATION_BEARER_TOKEN` environment variable if it is not provided.
         """
